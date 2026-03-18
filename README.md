@@ -18,27 +18,27 @@ J'ai par la suite créé de nouvelles règles dans mon UFW pour autoriser la con
 
 **INSTALLATION**
 
-```cd /tmp && wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-arm64.tar.gz```
-Je me suis déplacer dans /tmp (un dossier temporaire vidé au redémarrage),
-et ensuite je télecharge l'archive via Github, J'ai utilisé la version arm64 car le Raspberry pi 5 tourne sur cette architecture. Le "&&" fait que wget ne se lance que si le cd a réussi.
+`cd /tmp && wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-arm64.tar.gz`
+Je me suis déplaceé dans /tmp (un dossier temporaire vidé au redémarrage),
+et ensuite je télécharge l'archive via Github, J'ai utilisé la version arm64 car le Raspberry pi 5 tourne sur cette architecture. Le "&&" fait que wget ne se lance que si le cd a réussi.
 
-```tar xvf node_exporter-1.8.2.linux-arm64.tar.gz```
+`tar xvf node_exporter-1.8.2.linux-arm64.tar.gz`
 on extrait l'archive tout en restant dans le dossier /tmp .
 Avec tar xvf     x= extrait      v=verbose (montre tout ce qu'il extrait)      f=file (pour specifier le fichier archive à traiter)
 
-```sudo mv node_exporter-1.8.2.linux-arm64/node_exporter /usr/local/bin/```
+`sudo mv node_exporter-1.8.2.linux-arm64/node_exporter /usr/local/bin/`
 Je deplace le binaire "node_exporter" dans mon dossier /usr/local/bin/ ( endroit ou j'installe tout mes outils manuellement ).
 
-```sudo useradd --no-create-home --shell /bin/false node_exporter```
-Je créé un utilisateur dédié pour node_exporter sans shell et sans home comme ca personne ne pourra ce connecté a cette utilisateur la.
+`sudo useradd --no-create-home --shell /bin/false node_exporter`
+Je créé un utilisateur dédié pour node_exporter sans shell et sans home comme ca personne ne pourra se connecter a cette utilisateur la.
 
-```sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter```
+`sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter`
 Avec la commande chown je modifie le propriétaire et le groupe du binaire de node_exporter
 
-```sudo nano /etc/systemd/system/node_exporter.service```
+`sudo nano /etc/systemd/system/node_exporter.service`
 Je crée le fichier de service dans /etc/systemd/system/  C'est le dossier où systemd va chercher les services configurés manuellement par l'admin. Sans ce fichier, systemd ne saurait pas comment lancer Node Exporter.
 
-Une fois le fichier crée j'insère 
+Une fois le fichier crée j'insère le contenu suivant:
 ```ini
 [Unit]
 Description=Node Exporter
@@ -63,6 +63,6 @@ WantedBy=multi-user.target
 Sans cette section, `enable` ne saurait pas à quel moment du boot lancer le service.
 `[Install]` indique à quel moment du boot le service doit démarrer. `WantedBy=multi-user.target` signifie qu'il se lance lors du démarrage normal du système, c'est ce qui permet à `systemctl enable` de fonctionner.
 
-Pour finir l'installation de Node Exporter j'éffectue la commande `sudo systemctl daemon-reload`, commande qui dit à systemd de relire ses fichiers de configuration sans redémarrer. On vient de créer le fichier `node_exporter.service` ,sans cette commande, systemd ne le connaîtrait pas encore.
+Pour finir l'installation de Node Exporter j'effectue la commande `sudo systemctl daemon-reload`, commande qui dit à systemd de relire ses fichiers de configuration sans redémarrer. On vient de créer le fichier `node_exporter.service` ,sans cette commande, systemd ne le connaîtrait pas encore.
 Ensuite `sudo systemctl enable node_exporter` je créé un lien Symlink pour qu'il ce lance en meme temps que mon raspberry pi 5, comme ca a chaque redemarage il ce lancera automatiquement sans la commande `sudo systemctl start node_exporter`
 et ensuite je le lance avec la commande `sudo systemctl start node_exporter`.
