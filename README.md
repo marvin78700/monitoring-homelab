@@ -66,5 +66,3 @@ Sans cette section, `enable` ne saurait pas à quel moment du boot lancer le ser
 Pour finir l'installation de Node Exporter j'éffectue la commande `sudo systemctl daemon-reload`, commande qui dit à systemd de relire ses fichiers de configuration sans redémarrer. On vient de créer le fichier `node_exporter.service` ,sans cette commande, systemd ne le connaîtrait pas encore.
 Ensuite `sudo systemctl enable node_exporter` je créé un lien Symlink pour qu'il ce lance en meme temps que mon raspberry pi 5, comme ca a chaque redemarage il ce lancera automatiquement sans la commande `sudo systemctl start node_exporter`
 et ensuite je le lance avec la commande `sudo systemctl start node_exporter`.
-
-Pour finir avec Node_Exporter j'utilise la commande `sudo systemctl daemon-reload` cette commande "dit" à systemd de **relire ses fichiers de configuration sans redémarrer** 
