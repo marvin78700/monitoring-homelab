@@ -4,11 +4,11 @@ Mise en place d'un service de monitoring sur mon homelab pour voir en temps rée
 J'ai choisi Node Exporter, Prometheus et Grafana plutôt que des alternatives plus simples comme Beszel, pour me rapprocher de ce qu'on utilise vraiment en entreprise.
 
 **ARCHITECTURE**
-
+```
 Node Exporter (:9100) ──┐
                          ├──► Prometheus (:9090) ──► Grafana (:3000)
 windows_exporter (:9182)─┘
-
+```
 Node Exporter capture les métriques de mon Raspberry Pi 5, ensuite Prometheus vient les scraper toutes les 15 secondes et j'utilise Grafana pour que ce soit beaucoup plus lisible.
 
 **MES CHOIX TECHNIQUES**
