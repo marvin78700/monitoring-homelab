@@ -20,24 +20,36 @@ J'ai par la suite créé de nouvelles règles dans mon UFW pour autoriser la con
 
 ### Node Exporter
 
-`cd /tmp && wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-arm64.tar.gz`
+```ini
+cd /tmp && wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-arm64.tar.gz
+```
 Je me suis déplaceé dans /tmp (un dossier temporaire vidé au redémarrage),
 et ensuite je télécharge l'archive via Github, J'ai utilisé la version arm64 car le Raspberry pi 5 tourne sur cette architecture. Le "&&" fait que wget ne se lance que si le cd a réussi.
 
-`tar xvf node_exporter-1.8.2.linux-arm64.tar.gz`
-on extrait l'archive tout en restant dans le dossier /tmp .
+```ini
+tar xvf node_exporter-1.8.2.linux-arm64.tar.gz
+```
+on extrait l'archive tout en restant dans le dossier `/tmp` .
 Avec tar xvf     x= extrait      v=verbose (montre tout ce qu'il extrait)      f=file (pour specifier le fichier archive à traiter)
 
-`sudo mv node_exporter-1.8.2.linux-arm64/node_exporter /usr/local/bin/`
-Je deplace le binaire "node_exporter" dans mon dossier /usr/local/bin/ ( endroit ou j'installe tout mes outils manuellement ).
+```ini
+sudo mv node_exporter-1.8.2.linux-arm64/node_exporter /usr/local/bin/
+```
+Je deplace le binaire `node_exporter` dans mon dossier `/usr/local/bin/` ( endroit ou j'installe tout mes outils manuellement ).
 
-`sudo useradd --no-create-home --shell /bin/false node_exporter`
+```ini
+sudo useradd --no-create-home --shell /bin/false node_exporter
+```
 Je créé un utilisateur dédié pour node_exporter sans shell et sans home comme ca personne ne pourra se connecter a cette utilisateur la.
 
-`sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter`
+```ini
+sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
+```
 Avec la commande chown je modifie le propriétaire et le groupe du binaire de node_exporter
 
-`sudo nano /etc/systemd/system/node_exporter.service`
+```ini
+sudo nano /etc/systemd/system/node_exporter.service
+```
 Je crée le fichier de service dans /etc/systemd/system/  C'est le dossier où systemd va chercher les services configurés manuellement par l'admin. Sans ce fichier, systemd ne saurait pas comment lancer Node Exporter.
 
 Une fois le fichier crée j'insère le contenu suivant:
