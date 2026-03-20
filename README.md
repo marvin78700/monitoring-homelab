@@ -23,7 +23,7 @@ J'ai par la suite créé de nouvelles règles dans mon UFW pour autoriser la con
 ```ini
 cd /tmp && wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-arm64.tar.gz
 ```
-Je me suis déplaceé dans /tmp (un dossier temporaire vidé au redémarrage),
+Je me suis déplacé dans /tmp (un dossier temporaire vidé au redémarrage),
 et ensuite je télécharge l'archive via Github, J'ai utilisé la version arm64 car le Raspberry pi 5 tourne sur cette architecture. Le "&&" fait que wget ne se lance que si le cd a réussi.
 
 ```ini
@@ -95,7 +95,7 @@ le binaire `prometheus` est le binaire principal, c'est lui qui permet de tourn�
 le binaire `promtool` lui permet de vérifier la syntaxe du fichier prometheus.yml.
 
 Pour la suite je crée deux dossiers distinct : un qui ira dans `etc/prometheus/` cela servira pour stocker la configuration de Prometheus et l'autre dans `/var/lib/prometheus/` qui lui servira pour stocker les données collectées.
-Je déplace le fichier de configuration dans le dossier éxpliquer plus haut 
+Je déplace le fichier de configuration dans le dossier expliqué plus haut 
 ```ini
 sudo mv prometheus-2.51.0.linux-arm64/prometheus.yml /etc/prometheus/
 ```
@@ -130,8 +130,8 @@ ExecStart=/usr/local/bin/prometheus \
 [Install]
 WantedBy=multi-user.target
 ```
-C'est exactement comme pour node_exporter à la difference du user et du group puis également aux deux lignes que j'ai ajouter :
-`--config.file=/etc/prometheus/prometheus.yml \ indique ou ce trouve le fichr de configuration`
+C'est exactement comme pour node_exporter à la difference du user et du group puis également aux deux lignes que j'ai ajouté :
+`--config.file=/etc/prometheus/prometheus.yml \ indique ou ce trouve le fichier de configuration`
 `--storage.tsdb.path=/var/lib/prometheus/ indique ou ce trouve le fichier ou sont stocker les métriques`
 
 Et comme pour node exporter je termine par : 
@@ -184,7 +184,7 @@ echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stab
 `echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" |` La commande `echo` Génère le texte, le pipe envoie le resultat et `sudo tee /etc/apt/sources.list.d/grafana.list` écrit le resultat dans le dossier `/etc/apt/sources.list.d/grafana.list`.
 Pour que mon OS valide et télécharge depuis le dépôt de Grafana, il faut que je précise que j'ai bien la clé GPG. Je lui demande donc de vérifier dans `[signed-by=/etc/apt/keyrings/grafana.gpg]`.
 
-Une fois cela éffectuer, je met a jour les paquets avec:
+Une fois cela effectué, je met a jour les paquets avec:
 ```ini
 sudo apt update
 ```
@@ -204,8 +204,8 @@ sudo systemctl start grafana-server
 
 Maintenant j'utilise l'IP de mon raspberry pour accéder a l'interface graphique de grafana : <IP_RASPBERRY:3000> (:3000, port de base de Grafana).
 Une fois identifier avec les identifiants de base, je dois ajouter un connection pour que grafana récupère bien les données scrapper par prometheus, je me dirige sur "connection" et "add new connection"
-Je sélectionne **Prometheus** et je renseigne l'URL <http://localhost:9090>. Je clique sur **Save & test**, Grafana confirme que la connexion avec Prometheus est étable.
+Je sélectionne **Prometheus** et je renseigne l'URL <http://localhost:9090>. Je clique sur **Save & test**, Grafana confirme que la connexion avec Prometheus est établie.
 j'ai également ajouté mon pc Windows 11 donc pour cela j'ai dû ouvrir le port 9182 dans le pare-feu Windows pour autorisé la connexion. Cela fait je refait la même manipulation à la difference que j'ai dû mettre l'IP de mon pc : <IP_WireGuard:9182>, Wireguard car mon pc est toujours connécter au VPN du Raspberry.
 Pour afficher les résultats, je dois importé un Dashboard, il en existe énormément car nous pouvons le personnalisé comme bon nous semble. J'ai donc sélectionné un Dashboard crée par la communauté.
-Pour cela je clique sur **Dashboard** ensuite, je haut a droite **new** et **import**
-Je suis ensuite parti sur https://grafana.com/grafana/dashboards/ pour trouver une interface qui me satisfaisait. Pour mon Raspberry Pi j'ai selectionner l'ID : 1860 (Node Exporter Full) et pour mon Windows j'ai selectionner l'ID : 10467 (Windows monitoring Dashboard)
+Pour cela je clique sur **Dashboard** ensuite, en haut à droite **new** et **import**
+Je suis ensuite parti sur https://grafana.com/grafana/dashboards/ pour trouver une interface qui me satisfaisait. Pour mon Raspberry Pi j'ai sélectionné l'ID : 1860 (Node Exporter Full) et pour mon Windows j'ai sélectionné l'ID : 10467 (Windows monitoring Dashboard)
