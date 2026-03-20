@@ -11,6 +11,12 @@ windows_exporter (:9182)─┘
 ```
 Node Exporter capture les métriques de mon Raspberry Pi 5, ensuite Prometheus vient les scraper toutes les 15 secondes et j'utilise Grafana pour que ce soit beaucoup plus lisible.
 
+**MATERIEL**
+| Machine | OS | RAM | Rôle |
+|---|---|---|---|
+| Raspberry Pi 5 | Debian 12 (arm64) | 16 Go | Serveur Prometheus + Grafana + Node Exporter |
+| PC Windows 11 | Windows 11 (amd64) | 16 GO | Machine supervisée via windows_exporter |
+
 **MES CHOIX TECHNIQUES**
 
 Pour un peu plus de sécurité j'ai créé des utilisateurs dédiés sans home ni shell, comme ça rien n'est relié à l'utilisateur que j'utilise et cela réduit la zone de possible attaque.
