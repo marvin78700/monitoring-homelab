@@ -72,9 +72,6 @@ WantedBy=multi-user.target
 
 `[Service]` définit comment lancer le processus. `User` et `Group` indiquent que le service tourne sous l'utilisateur dédié node_exporter. `Type=simple` signifie que systemd considère le service comme démarré dès que le processus est lancé. `ExecStart` donne le chemin du binaire à exécuter.
 
-
-`WantedBy=multi-user.target` c'est ce qui dit à systemd de démarrer ce service au boot, lors du démarrage normal du système. C'est ce qui fait que `systemctl enable` fonctionne.
-Sans cette section, `enable` ne saurait pas à quel moment du boot lancer le service.
 `[Install]` indique à quel moment du boot le service doit démarrer. `WantedBy=multi-user.target` signifie qu'il se lance lors du démarrage normal du système, c'est ce qui permet à `systemctl enable` de fonctionner.
 
 Pour finir l'installation de Node Exporter j'effectue la commande `sudo systemctl daemon-reload`, commande qui dit à systemd de relire ses fichiers de configuration sans redémarrer. On vient de créer le fichier `node_exporter.service` ,sans cette commande, systemd ne le connaîtrait pas encore.
