@@ -204,4 +204,8 @@ sudo systemctl start grafana-server
 
 Maintenant j'utilise l'IP de mon raspberry pour accéder a l'interface graphique de grafana : <IP_RASPBERRY:3000> (:3000, port de base de Grafana).
 Une fois identifier avec les identifiants de base, je dois ajouter un connection pour que grafana récupère bien les données scrapper par prometheus, je me dirige sur "connection" et "add new connection"
-Je sélectionne **Prometheus** et je renseigne 
+Je sélectionne **Prometheus** et je renseigne l'URL <http://localhost:9090>. Je clique sur **Save & test**, Grafana confirme que la connexion avec Prometheus est étable.
+j'ai également ajouté mon pc Windows 11 donc pour cela j'ai dû ouvrir le port 9182 dans le pare-feu Windows pour autorisé la connexion. Cela fait je refait la même manipulation à la difference que j'ai dû mettre l'IP de mon pc : <IP_WireGuard:9182>, Wireguard car mon pc est toujours connécter au VPN du Raspberry.
+Pour afficher les résultats, je dois importé un Dashboard, il en existe énormément car nous pouvons le personnalisé comme bon nous semble. J'ai donc sélectionné un Dashboard crée par la communauté.
+Pour cela je clique sur **Dashboard** ensuite, je haut a droite **new** et **import**
+Je suis ensuite parti sur https://grafana.com/grafana/dashboards/ pour trouver une interface qui me satisfaisait. Pour mon Raspberry Pi j'ai selectionner l'ID : 1860 (Node Exporter Full) et pour mon Windows j'ai selectionner l'ID : 10467 (Windows monitoring Dashboard)
