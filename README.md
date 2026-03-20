@@ -130,7 +130,7 @@ ExecStart=/usr/local/bin/prometheus \
 [Install]
 WantedBy=multi-user.target
 ```
-C'est exactement comme pour node_exporter a la difference du user et du group puis également aux deux lignes que j'ai ajouter :
+C'est exactement comme pour node_exporter à la difference du user et du group puis également aux deux lignes que j'ai ajouter :
 `--config.file=/etc/prometheus/prometheus.yml \ indique ou ce trouve le fichr de configuration`
 `--storage.tsdb.path=/var/lib/prometheus/ indique ou ce trouve le fichier ou sont stocker les métriques`
 
@@ -162,9 +162,46 @@ Pour verifier que mes cibles sont bien actif je vais sur l'ip de mon raspberry p
 ### Grafana
 
 Afin de pouvoir installer via apt Grafana, il faut pour commencé ajouter la clé GPG (clé cryptographique) afin que apt puisse vérifier que les paquets viennent bien de Grafana.
-Pour cela je crée d'abord un dossier dans le dossier `/etc/apt/` qui ce nommera `/keyrings/` donc 
+Pour cela je crée d'abord un dossier dans le dossier `/etc/apt/` qui ce nommera `/keyrings/` donc: 
 ```ini
 sudo mkdir -p /etc/apt/keyrings
 ```
 le `-p` crée tout les dossiers intermediraires s'ils n'existent pas déjà, sans `-p`, si `/etc/apt/` n'existait pas, la commande échouerait. Avec `-p`, il crée tout ce qui manque.
-Dans mon cas, dans mon OS Raspberry pi OS lite mon dossier existait déjà, donc le `-p` sert surtout à éviter une erreur si le dossier `keyrings` existe déjà.
+Dans mon cas, dans mon OS Raspberry pi OS lite le dossier existait déjà, donc le `-p` sert surtout à éviter une erreur si le dossier `keyrings` était déjà existant.
+
+Une fois le dossier crée, je vais télécharger la clé GPG de Grafana, que je la convertis et que je l'ecrive dans le dossier crée précédemment. Pour cela: 
+```ini
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+```
+`wget -q -O - https://apt.grafana.com/gpg.key |` Télécharge la clé sur le site GPG officielle de grafana. le `-q` = silencieux, pas d'affichage de progression. Le `-O -` envoie le résultat dans le pipe suivant (`|`) au lieu de le sauvegarder dans un fichier.
+`gpg --dearmor |` Reçois la clé GPG du pipe précédent, et comme la clé de base est en format ASCII, `apt` ne comprend pas ce format donc je la convertit en format binaire que apt peut lire avec la commande `--dearmor` et je l'envoie dans le pipe suivant (`|`).
+`sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null` Une fois la clé convertie reçu, je l'écris ave la commande `tee` dans le fichier `/etc/apt/keyrings/grafana.gpg`. Je redirige l'affichage de `tee` dans `> /dev/null` pour supprimer l'affichage de la sortie.
+
+Ensuite j'ajoute le dépôt officelle de Grafana dans la liste des dépôts de Debian:
+```ini
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+```
+`echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" |` La commande `echo` Génère le texte, le pipe envoie le resultat et `sudo tee /etc/apt/sources.list.d/grafana.list` écrit le resultat dans le dossier `/etc/apt/sources.list.d/grafana.list`.
+Pour que mon OS valide et télécharge depuis le dépôt de Grafana, il faut que je précise que j'ai bien la clé GPG. Je lui demande donc de vérifier dans `[signed-by=/etc/apt/keyrings/grafana.gpg]`.
+
+Une fois cela éffectuer, je met a jour les paquets avec:
+```ini
+sudo apt update
+```
+J'installe maintenant grafana:
+```ini
+sudo apt install grafana -y
+```
+Je crée un lien symlink pour qu'il démarre automatiquement au démarrage de mon Raspberry pi:
+```ini
+sudo systemctl enable grafana-server
+```
+Je démarre le service:
+```ini
+sudo systemctl start grafana-server
+```
+`grafana-server` et non simplement `grafana` car c'est le nom du service systemd que Grafana utilise le binaire s'appelle grafana mais le service systemd s'appelle grafana-server.
+
+Maintenant j'utilise l'IP de mon raspberry pour accéder a l'interface graphique de grafana : <IP_RASPBERRY:3000> (:3000, port de base de Grafana).
+Une fois identifier avec les identifiants de base, je dois ajouter un connection pour que grafana récupère bien les données scrapper par prometheus, je me dirige sur "connection" et "add new connection"
+Je sélectionne **Prometheus** et je renseigne 
