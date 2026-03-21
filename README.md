@@ -218,5 +218,5 @@ Je suis ensuite parti sur https://grafana.com/grafana/dashboards/ pour trouver u
 
 ## APERCU
 
-![Dashboard Raspberry Pi 5](dashboard-pi.png)
-![dashboard Windows11](dashboard-windows.png)
+![Dashboard Raspberry Pi 5](images/dashboard-pi.png)
+![dashboard Windows11](images/dashboard-windows.png)
