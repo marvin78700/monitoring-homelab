@@ -214,4 +214,9 @@ j'ai également ajouté mon pc Windows 11 donc pour cela j'ai dû ouvrir le port
 
 Pour afficher les résultats, je dois importé un Dashboard, il en existe énormément car nous pouvons le personnalisé comme bon nous semble. J'ai donc sélectionné un Dashboard crée par la communauté.
 Pour cela je clique sur **Dashboard** ensuite, en haut à droite **new** et **import**
-Je suis ensuite parti sur https://grafana.com/grafana/dashboards/ pour trouver une interface qui me satisfaisait. Pour mon Raspberry Pi j'ai sélectionné l'ID : 1860 (Node Exporter Full) et pour mon Windows j'ai sélectionné l'ID : 10467 (Windows monitoring Dashboard)
+Je suis ensuite parti sur https://grafana.com/grafana/dashboards/ pour trouver une interface qui me satisfaisait. Pour mon Raspberry Pi j'ai sélectionné l'ID : 1860 (Node Exporter Full) et pour mon Windows j'ai sélectionné l'ID : 10467 (Windows monitoring Dashboard).
+
+## APERCU
+
+![Dashboard Raspberry Pi 5](dashboard-pi.png)
+![dashboard Windows11](dashboard-windows.png)
